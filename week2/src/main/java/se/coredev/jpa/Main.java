@@ -1,6 +1,7 @@
 package se.coredev.jpa;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -38,9 +39,46 @@ public class Main {
 		// testMerge(findResult);
 
 		// Test find Department
-		testFindDepartment();
+		// testFindDepartment();
 
+		// testRemove(employee);
+
+		testGetAllEmployees();
+		testGetEmployeeByEmployeeNumber(employee.getEmployeeNumber());
 		factory.close();
+	}
+
+	private static void testGetAllEmployees() {
+		EntityManager manager = factory.createEntityManager();
+
+		Collection<Employee> employees = manager.createNamedQuery("Employee.GetAll", Employee.class)
+		                                        .getResultList();
+
+		employees.forEach(System.out::println);
+	}
+
+	private static void testGetEmployeeByEmployeeNumber(String employeeNumber) {
+		EntityManager manager = factory.createEntityManager();
+
+		Collection<Employee> employees = manager.createNamedQuery("Employee.GetByEmployeeNumber", Employee.class)
+		                                        .setParameter("employeeNumber", employeeNumber)
+		                                        .getResultList();
+
+		employees.forEach(System.out::println);
+	}
+
+	private static void testRemove(Employee employee) {
+
+		EntityManager manager = factory.createEntityManager();
+		employee = manager.find(Employee.class, employee.getId());
+
+		if (employee != null) {
+			manager.getTransaction().begin();
+			manager.remove(employee);
+			manager.getTransaction().commit();
+		}
+
+		manager.close();
 	}
 
 	private static void testFindDepartment() {
@@ -53,7 +91,6 @@ public class Main {
 		result.forEach(System.out::println);
 	}
 
-	
 	private static void testMerge(Employee employee) {
 
 		EntityManager manager = factory.createEntityManager();
@@ -91,16 +128,15 @@ public class Main {
 		return result;
 	}
 
-	// private static List<Employee> queryEmployeeById(Long id) {
-	// EntityManager manager = factory.createEntityManager();
-	//
-	// List<Employee> result = manager.createQuery("select e from Employee e
-	// where e.id = :id", Employee.class)
-	// .setParameter("id", id)
-	// .getResultList();
-	// manager.close();
-	//
-	// return result;
-	// }
+	private static List<Employee> queryEmployeeById(Long id) {
+		EntityManager manager = factory.createEntityManager();
+
+		List<Employee> result = manager.createQuery("select e from Employee e where e.id = :id", Employee.class)
+		                               .setParameter("id", id)
+		                               .getResultList();
+		manager.close();
+
+		return result;
+	}
 
 }
