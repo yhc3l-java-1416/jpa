@@ -1,14 +1,22 @@
 package se.coredev.jpa.model;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -44,20 +52,26 @@ public class Employee {
 	@ManyToOne
 	private Department department;
 
-	@Column
-	private Address address;
+	@OneToMany (cascade = CascadeType.PERSIST)
+	private Map<String, Address> addresses;
+
+	@ElementCollection
+	@CollectionTable(name = "tblEmployeeNote")
+	@MapKeyColumn(name = "noteId")
+	private Map<String, String> notes;
 
 	protected Employee() {
 	}
 
 	public Employee(String employeeNumber, String firstName, String lastName, ParkingSpot parkingSpot,
-	        Department department, Address address) {
+	        Department department) {
 		this.employeeNumber = employeeNumber;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.parkingSpot = parkingSpot;
 		this.department = department;
-		this.address = address;
+		this.addresses = new HashMap<>();
+		this.notes = new HashMap<>();
 	}
 
 	public Long getId() {
@@ -92,12 +106,22 @@ public class Employee {
 		return department;
 	}
 
-	public Address getAddress() {
-		return address;
+	public Map<String, Address> getAddresses() {
+		return addresses;
 	}
 
-	public void setAddress(Address address) {
-		this.address = address;
+	public Employee addAddress(Address address) {
+		addresses.put(address.getAddressCode(), address);
+		return this;
+	}
+
+	public Map<String, String> getNotes() {
+		return notes;
+	}
+
+	public Employee addNote(String note) {
+		notes.put(UUID.randomUUID().toString(), note);
+		return this;
 	}
 
 	@Override

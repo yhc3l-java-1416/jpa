@@ -1,13 +1,17 @@
 package se.coredev.jpa.model;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@Embeddable
-public class Address {
+@Entity
+@Table(name = "tblAddress")
+public class Address extends AbstractEntity {
 
 	@Column
 	private String street;
@@ -15,14 +19,14 @@ public class Address {
 	private String postal;
 	@Column(name = "zip_code")
 	private String zip;
-
-	protected Address() {
-	}
+	@Column
+	private String addressCode;
 
 	public Address(String street, String postal, String zip) {
 		this.street = street;
 		this.postal = postal;
 		this.zip = zip;
+		this.addressCode = UUID.randomUUID().toString();
 	}
 
 	public String getStreet() {
@@ -35,6 +39,10 @@ public class Address {
 
 	public String getZip() {
 		return zip;
+	}
+
+	public String getAddressCode() {
+		return addressCode;
 	}
 
 	@Override

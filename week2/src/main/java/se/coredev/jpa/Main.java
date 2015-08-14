@@ -30,7 +30,9 @@ public class Main {
 
 		// Persist Employee
 		Address address = new Address("street", "postal", "zip");
-		Employee employee = new Employee(UUID.randomUUID().toString(), "Master", "Jones", parkingSpot, department, address);
+		Employee employee = new Employee(UUID.randomUUID().toString(), "Master", "Jones", parkingSpot, department).addAddress(address)
+		                                                                                                          .addNote("Note1")
+		                                                                                                          .addNote("Note2");
 		employee = persistValue(employee);
 
 		// Find Employee by id
@@ -99,7 +101,7 @@ public class Main {
 
 		employee = manager.merge(employee);
 
-		employee.setAddress(new Address("new street", "new postal", "new zip"));
+		employee.addAddress(new Address("new street", "new postal", "new zip"));
 		employee.setLastName("new last name");
 
 		manager.getTransaction().commit();
