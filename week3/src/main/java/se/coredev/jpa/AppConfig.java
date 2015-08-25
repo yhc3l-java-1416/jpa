@@ -1,4 +1,4 @@
-package se.coredev.jpa.config;
+package se.coredev.jpa;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -19,7 +19,7 @@ import com.zaxxer.hikari.HikariDataSource;
 @Configuration
 @EnableJpaRepositories("se.coredev.jpa.repository")
 @EnableTransactionManagement
-public class InfrastructureConfig {
+public class AppConfig {
 
 	@Bean
 	public DataSource dataSource() {
@@ -43,19 +43,19 @@ public class InfrastructureConfig {
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
 		adapter.setDatabase(Database.MYSQL);
 		adapter.setGenerateDdl(true);
-
+		
 		return adapter;
 	}
 
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-
+		
 		LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
 		factory.setDataSource(dataSource());
 		factory.setJpaVendorAdapter(jpaVendorAdapter());
 		factory.setPackagesToScan("se.coredev.jpa.model");
-
+		
 		return factory;
 	}
-	
+
 }

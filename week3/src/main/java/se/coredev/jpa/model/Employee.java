@@ -1,11 +1,8 @@
 package se.coredev.jpa.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -23,18 +20,13 @@ public class Employee {
 	private String lastname;
 	private String employeeNumber;
 
-	@OneToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(unique = true)
-	private Address address;
-
 	protected Employee() {
 	}
 
-	public Employee(String firstname, String lastname, String employeeNumber, Address address) {
+	public Employee(String firstname, String lastname, String employeeNumber) {
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.employeeNumber = employeeNumber;
-		this.address = address;
 	}
 
 	public Long getId() {
