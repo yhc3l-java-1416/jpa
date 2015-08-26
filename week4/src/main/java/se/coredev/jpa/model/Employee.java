@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "tblEmployees")
+@NamedQuery(name="Employee.giveMeAnEmployeeWithNumber", query="select e from Employee e where e.employeeNumber = ?1")
 public class Employee {
 
 	@Id
