@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.coredev.jpa.model.Employee;
 
-public interface EmployeeRepository extends CrudRepository<Employee, Long> {
+public interface EmployeeRepository extends CrudRepository<Employee, Long>, EmployeeRepositoryCustom {
 	
 	List<Employee> findByFirstname(String firstname);
 	List<Employee> findByLastname(String lastname);
@@ -43,4 +43,8 @@ public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 	@Query("select e from #{#entityName} e where e.employeeNumber like %:empNo and e.firstname like %:firstname")	
 	List<Employee> employeesWithFirstnameAndNumberLike(@Param("empNo") String employeeNumber, 
 	                                                   @Param("firstname") String firstname);
+	
+	
+	
+	
 }

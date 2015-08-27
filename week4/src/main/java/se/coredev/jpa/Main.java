@@ -1,12 +1,11 @@
 package se.coredev.jpa;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
 import se.coredev.jpa.model.Address;
 import se.coredev.jpa.model.Employee;
 import se.coredev.jpa.repository.EmployeeRepository;
+import se.coredev.jpa.service.EmployeeService;
 
 public class Main {
 
@@ -16,14 +15,17 @@ public class Main {
 			context.scan("se.coredev.jpa.config");
 			context.refresh();
 
+//			EmployeeService service = context.getBean(EmployeeService.class);
+//			
+//			Employee employee1 = new Employee("firstname1", "lastname1", "1001", new Address("street1", "city2", "zip3"));
+//			Employee employee2 = new Employee("firstname2", "lastname2", "1001", new Address("street2", "city2", "zip3"));
+//			
+//			service.addEmployee(employee1);
+//			service.addEmployee(employee2);
+			
 			EmployeeRepository repository = context.getBean(EmployeeRepository.class);
-			// addRandomEmployees(repository, 50);
-
-//			repository.findByLastnameLike("lastname1%", new PageRequest(0, 3)).forEach(System.out::println);
-
-//			System.out.println(repository.giveMeAnotherEmployeeWithNumber("e1"));
-			repository.employeesWithFirstnameAndNumberLike("2", "first").forEach(System.out::println);
-
+			Employee employee = new Employee("firstname", "lastname", "1001", new Address("street", "city", "zip"));
+			repository.logEmployee(employee);
 		}
 	}
 
